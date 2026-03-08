@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobtracker
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: jobtracker
+
+  template:
+    metadata:
+      labels:
+        app: jobtracker
+
+    spec:
+      containers:
+        - name: web
+          image: jobtracker:1.0
+
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://postgres:postgres@postgres:5432/jobtracker"
+
+            - name: NEXTAUTH_SECRET
+              value: "super-secret-dev-key-change-in-production"
+
+            - name: NEXTAUTH_URL
+              value: "http://192.168.49.2:30007"
+
+            - name: GEMINI_API_KEY
+              value: "your-api-key"
